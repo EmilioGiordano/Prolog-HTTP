@@ -13,5 +13,5 @@ swipl get.pl
 ```
 
 ### Do request
-Open http.localhost:8080/enlaces
+Open `http.localhost:8080/enlaces`
 
