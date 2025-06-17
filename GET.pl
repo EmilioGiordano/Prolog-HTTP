@@ -13,7 +13,7 @@ enlace('OnTime', 'www.OnTime.com').
 
 % Handlers
 :- http_handler('/enlaces', obtener_enlaces, []).
-:- http_handler(root(enlace/N), obtener_enlace_por_nombre, [method(get)]).
+:- http_handler(root(enlace/NOMBRE), obtener_enlace_por_nombre(NOMBRE), [method(get)]).
 
 % GET /enlaces
 obtener_enlaces(_Request) :-
@@ -25,12 +25,9 @@ obtener_enlaces(_Request) :-
     reply_json_dict(Enlaces).
 
 % GET /enlace/AGENCIA
-obtener_enlace_por_nombre(Request) :-
-    http_dispatch:request_uri(Request, URI),
-    atomic_list_concat(['/enlace', NombreAtom], '/', URI),
-    atom_string(NombreAtom, Nombre),
-    ( enlace(Nombre, URL) ->
-        reply_json_dict(_{agencia: Nombre, url: URL})
+obtener_enlace_por_nombre(NOMBRE, _Request) :-
+    ( enlace(NOMBRE, URL) ->
+        reply_json_dict(_{agencia: NOMBRE, url: URL})
     ; reply_json_dict(_{error: "Agencia no encontrada"}, [status(404)])
     ).
 
